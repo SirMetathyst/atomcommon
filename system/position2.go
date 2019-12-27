@@ -5,35 +5,35 @@ import (
 	"github.com/SirMetathyst/atomcommon"
 )
 
-// Position2DSystem ...
-type Position2DSystem struct {
-	group         *atom.G
+// Position2System ...
+type Position2System struct {
+	group         atom.Grouper
 	entityManager *atom.EntityManager
 }
 
-// NewPosition2DSystem ...
-func NewPosition2DSystem() *Position2DSystem {
-	return &Position2DSystem{
+// NewPosition2System ...
+func NewPosition2System() *Position2System {
+	return &Position2System{
 		entityManager: atom.Default(),
-		group:         atom.Default().Group(atom.AllOf(atomcommon.Position2Key, atomcommon.Velocity2Key)),
+		group:         atom.Default().Group(atom.AllOf(atomcommon.LocalPosition2Key, atomcommon.Velocity2Key)),
 	}
 }
 
-// NewPosition2DSystemWith ...
-func NewPosition2DSystemWith(e *atom.EntityManager) *Position2DSystem {
-	return &Position2DSystem{
+// NewPosition2SystemWith ...
+func NewPosition2SystemWith(e *atom.EntityManager) *Position2System {
+	return &Position2System{
 		entityManager: e,
-		group:         e.Group(atom.AllOf(atomcommon.Position2Key, atomcommon.Velocity2Key)),
+		group:         e.Group(atom.AllOf(atomcommon.LocalPosition2Key, atomcommon.Velocity2Key)),
 	}
 }
 
 // Update ...
-func (s Position2DSystem) Update(dt float32) {
+func (s Position2System) Update(dt float32) {
 	for _, id := range s.group.Entities() {
 		velocity := atomcommon.Velocity2X(s.entityManager, id)
-		position := atomcommon.Position2X(s.entityManager, id)
+		position := atomcommon.LocalPosition2X(s.entityManager, id)
 		position.X += velocity.X * dt
 		position.Y += velocity.Y * dt
-		atomcommon.SetPosition2X(s.entityManager, id, position)
+		atomcommon.SetLocalPosition2X(s.entityManager, id, position)
 	}
 }
