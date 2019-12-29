@@ -1,4 +1,4 @@
-prog = atom component add -p atomcommon -n
+prog = atom component add -p atomkit -n
 
 test:
 	go test -race -coverprofile=coverage.txt -covermode=atomic
@@ -17,4 +17,6 @@ generate:
 	$(prog) LocalPosition2 -d x:float32 -d y:float32 
 	$(prog) LocalRotation2 -d x:float32 -d y:float32
 	$(prog) LocalScale2    -d x:float32 -d y:float32
-	$(prog) Velocity2 -d x:float32 -d y:float32 
+	$(prog) Velocity2      -d x:float32 -d y:float32 
+
+	$(prog) CreateWindow -d title:string 

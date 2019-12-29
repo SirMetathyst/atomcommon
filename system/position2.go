@@ -2,12 +2,12 @@ package logic
 
 import (
 	"github.com/SirMetathyst/atom"
-	"github.com/SirMetathyst/atomcommon"
+	"github.com/SirMetathyst/atomkit"
 )
 
 // Position2System ...
 type Position2System struct {
-	group         atom.Grouper
+	group         atom.G
 	entityManager *atom.EntityManager
 }
 
@@ -15,7 +15,7 @@ type Position2System struct {
 func NewPosition2System() *Position2System {
 	return &Position2System{
 		entityManager: atom.Default(),
-		group:         atom.Default().Group(atom.AllOf(atomcommon.LocalPosition2Key, atomcommon.Velocity2Key)),
+		group:         atom.Default().Group(atom.AllOf(atomkit.LocalPosition2Key, atomkit.Velocity2Key)),
 	}
 }
 
@@ -23,17 +23,17 @@ func NewPosition2System() *Position2System {
 func NewPosition2SystemWith(e *atom.EntityManager) *Position2System {
 	return &Position2System{
 		entityManager: e,
-		group:         e.Group(atom.AllOf(atomcommon.LocalPosition2Key, atomcommon.Velocity2Key)),
+		group:         e.Group(atom.AllOf(atomkit.LocalPosition2Key, atomkit.Velocity2Key)),
 	}
 }
 
 // Update ...
-func (s Position2System) Update(dt float32) {
+func (s Position2System) Update(dt float64) {
 	for _, id := range s.group.Entities() {
-		velocity := atomcommon.Velocity2X(s.entityManager, id)
-		position := atomcommon.LocalPosition2X(s.entityManager, id)
-		position.X += velocity.X * dt
-		position.Y += velocity.Y * dt
-		atomcommon.SetLocalPosition2X(s.entityManager, id, position)
+		velocity := atomkit.Velocity2X(s.entityManager, id)
+		position := atomkit.LocalPosition2X(s.entityManager, id)
+		position.X += velocity.X * float32(dt)
+		position.Y += velocity.Y * float32(dt)
+		atomkit.SetLocalPosition2X(s.entityManager, id, position)
 	}
 }
