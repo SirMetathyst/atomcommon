@@ -19,7 +19,7 @@ type LocalPosition2Data struct {
 
 // LocalPosition2Component ...
 type LocalPosition2Component struct {
-	context atom.Context
+	ctx atom.CTX
 	data map[atom.EntityID]LocalPosition2Data
 }
 
@@ -31,16 +31,16 @@ func NewLocalPosition2Component() *LocalPosition2Component {
 }
 
 // SetContext ...
-func (c *LocalPosition2Component) SetContext(ctx atom.Context) {
-	if c.context == nil {
-		c.context = ctx
+func (c *LocalPosition2Component) SetContext(ctx atom.CTX) {
+	if c.ctx == nil {
+		c.ctx = ctx
 	}
 }
 
 func init() {
 	x := NewLocalPosition2Component()
-	context := atom.Default().RegisterComponent(LocalPosition2Key, x)
-	x.SetContext(context)
+	ctx := atom.Default().RegisterComponent(LocalPosition2Key, x)
+	x.SetContext(ctx)
 }
 
 // DeleteEntity ...
@@ -56,13 +56,13 @@ func (c *LocalPosition2Component) HasEntity(id atom.EntityID) bool {
 
 // SetLocalPosition2 ...
 func (c *LocalPosition2Component) SetLocalPosition2(id atom.EntityID, localposition2 LocalPosition2Data) {
-	if c.context.HasEntity(id) {
+	if c.ctx.HasEntity(id) {
 		if c.HasEntity(id) {
 			c.data[id] = localposition2
-			c.context.ComponentUpdated(LocalPosition2Key, id)
+			c.ctx.ComponentUpdated(LocalPosition2Key, id)
 		} else {
 			c.data[id] = localposition2
-			c.context.ComponentAdded(LocalPosition2Key, id)
+			c.ctx.ComponentAdded(LocalPosition2Key, id)
 		}
 	}
 }
@@ -75,7 +75,7 @@ func (c *LocalPosition2Component) LocalPosition2(id atom.EntityID) LocalPosition
 // DeleteLocalPosition2 ...
 func (c *LocalPosition2Component) DeleteLocalPosition2(id atom.EntityID) {
 	delete(c.data, id)
-	c.context.ComponentDeleted(LocalPosition2Key, id)
+	c.ctx.ComponentDeleted(LocalPosition2Key, id)
 }
 
 // SetLocalPosition2X ...

@@ -19,7 +19,7 @@ type LocalRotation2Data struct {
 
 // LocalRotation2Component ...
 type LocalRotation2Component struct {
-	context atom.Context
+	ctx atom.CTX
 	data map[atom.EntityID]LocalRotation2Data
 }
 
@@ -31,16 +31,16 @@ func NewLocalRotation2Component() *LocalRotation2Component {
 }
 
 // SetContext ...
-func (c *LocalRotation2Component) SetContext(ctx atom.Context) {
-	if c.context == nil {
-		c.context = ctx
+func (c *LocalRotation2Component) SetContext(ctx atom.CTX) {
+	if c.ctx == nil {
+		c.ctx = ctx
 	}
 }
 
 func init() {
 	x := NewLocalRotation2Component()
-	context := atom.Default().RegisterComponent(LocalRotation2Key, x)
-	x.SetContext(context)
+	ctx := atom.Default().RegisterComponent(LocalRotation2Key, x)
+	x.SetContext(ctx)
 }
 
 // DeleteEntity ...
@@ -56,13 +56,13 @@ func (c *LocalRotation2Component) HasEntity(id atom.EntityID) bool {
 
 // SetLocalRotation2 ...
 func (c *LocalRotation2Component) SetLocalRotation2(id atom.EntityID, localrotation2 LocalRotation2Data) {
-	if c.context.HasEntity(id) {
+	if c.ctx.HasEntity(id) {
 		if c.HasEntity(id) {
 			c.data[id] = localrotation2
-			c.context.ComponentUpdated(LocalRotation2Key, id)
+			c.ctx.ComponentUpdated(LocalRotation2Key, id)
 		} else {
 			c.data[id] = localrotation2
-			c.context.ComponentAdded(LocalRotation2Key, id)
+			c.ctx.ComponentAdded(LocalRotation2Key, id)
 		}
 	}
 }
@@ -75,7 +75,7 @@ func (c *LocalRotation2Component) LocalRotation2(id atom.EntityID) LocalRotation
 // DeleteLocalRotation2 ...
 func (c *LocalRotation2Component) DeleteLocalRotation2(id atom.EntityID) {
 	delete(c.data, id)
-	c.context.ComponentDeleted(LocalRotation2Key, id)
+	c.ctx.ComponentDeleted(LocalRotation2Key, id)
 }
 
 // SetLocalRotation2X ...

@@ -18,7 +18,7 @@ type CreateWindowData struct {
 
 // CreateWindowComponent ...
 type CreateWindowComponent struct {
-	context atom.Context
+	ctx atom.CTX
 	data map[atom.EntityID]CreateWindowData
 }
 
@@ -30,16 +30,16 @@ func NewCreateWindowComponent() *CreateWindowComponent {
 }
 
 // SetContext ...
-func (c *CreateWindowComponent) SetContext(ctx atom.Context) {
-	if c.context == nil {
-		c.context = ctx
+func (c *CreateWindowComponent) SetContext(ctx atom.CTX) {
+	if c.ctx == nil {
+		c.ctx = ctx
 	}
 }
 
 func init() {
 	x := NewCreateWindowComponent()
-	context := atom.Default().RegisterComponent(CreateWindowKey, x)
-	x.SetContext(context)
+	ctx := atom.Default().RegisterComponent(CreateWindowKey, x)
+	x.SetContext(ctx)
 }
 
 // DeleteEntity ...
@@ -55,13 +55,13 @@ func (c *CreateWindowComponent) HasEntity(id atom.EntityID) bool {
 
 // SetCreateWindow ...
 func (c *CreateWindowComponent) SetCreateWindow(id atom.EntityID, createwindow CreateWindowData) {
-	if c.context.HasEntity(id) {
+	if c.ctx.HasEntity(id) {
 		if c.HasEntity(id) {
 			c.data[id] = createwindow
-			c.context.ComponentUpdated(CreateWindowKey, id)
+			c.ctx.ComponentUpdated(CreateWindowKey, id)
 		} else {
 			c.data[id] = createwindow
-			c.context.ComponentAdded(CreateWindowKey, id)
+			c.ctx.ComponentAdded(CreateWindowKey, id)
 		}
 	}
 }
@@ -74,7 +74,7 @@ func (c *CreateWindowComponent) CreateWindow(id atom.EntityID) CreateWindowData 
 // DeleteCreateWindow ...
 func (c *CreateWindowComponent) DeleteCreateWindow(id atom.EntityID) {
 	delete(c.data, id)
-	c.context.ComponentDeleted(CreateWindowKey, id)
+	c.ctx.ComponentDeleted(CreateWindowKey, id)
 }
 
 // SetCreateWindowX ...

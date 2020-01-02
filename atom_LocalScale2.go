@@ -19,7 +19,7 @@ type LocalScale2Data struct {
 
 // LocalScale2Component ...
 type LocalScale2Component struct {
-	context atom.Context
+	ctx atom.CTX
 	data map[atom.EntityID]LocalScale2Data
 }
 
@@ -31,16 +31,16 @@ func NewLocalScale2Component() *LocalScale2Component {
 }
 
 // SetContext ...
-func (c *LocalScale2Component) SetContext(ctx atom.Context) {
-	if c.context == nil {
-		c.context = ctx
+func (c *LocalScale2Component) SetContext(ctx atom.CTX) {
+	if c.ctx == nil {
+		c.ctx = ctx
 	}
 }
 
 func init() {
 	x := NewLocalScale2Component()
-	context := atom.Default().RegisterComponent(LocalScale2Key, x)
-	x.SetContext(context)
+	ctx := atom.Default().RegisterComponent(LocalScale2Key, x)
+	x.SetContext(ctx)
 }
 
 // DeleteEntity ...
@@ -56,13 +56,13 @@ func (c *LocalScale2Component) HasEntity(id atom.EntityID) bool {
 
 // SetLocalScale2 ...
 func (c *LocalScale2Component) SetLocalScale2(id atom.EntityID, localscale2 LocalScale2Data) {
-	if c.context.HasEntity(id) {
+	if c.ctx.HasEntity(id) {
 		if c.HasEntity(id) {
 			c.data[id] = localscale2
-			c.context.ComponentUpdated(LocalScale2Key, id)
+			c.ctx.ComponentUpdated(LocalScale2Key, id)
 		} else {
 			c.data[id] = localscale2
-			c.context.ComponentAdded(LocalScale2Key, id)
+			c.ctx.ComponentAdded(LocalScale2Key, id)
 		}
 	}
 }
@@ -75,7 +75,7 @@ func (c *LocalScale2Component) LocalScale2(id atom.EntityID) LocalScale2Data {
 // DeleteLocalScale2 ...
 func (c *LocalScale2Component) DeleteLocalScale2(id atom.EntityID) {
 	delete(c.data, id)
-	c.context.ComponentDeleted(LocalScale2Key, id)
+	c.ctx.ComponentDeleted(LocalScale2Key, id)
 }
 
 // SetLocalScale2X ...

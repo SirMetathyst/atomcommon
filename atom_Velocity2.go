@@ -19,7 +19,7 @@ type Velocity2Data struct {
 
 // Velocity2Component ...
 type Velocity2Component struct {
-	context atom.Context
+	ctx atom.CTX
 	data map[atom.EntityID]Velocity2Data
 }
 
@@ -31,16 +31,16 @@ func NewVelocity2Component() *Velocity2Component {
 }
 
 // SetContext ...
-func (c *Velocity2Component) SetContext(ctx atom.Context) {
-	if c.context == nil {
-		c.context = ctx
+func (c *Velocity2Component) SetContext(ctx atom.CTX) {
+	if c.ctx == nil {
+		c.ctx = ctx
 	}
 }
 
 func init() {
 	x := NewVelocity2Component()
-	context := atom.Default().RegisterComponent(Velocity2Key, x)
-	x.SetContext(context)
+	ctx := atom.Default().RegisterComponent(Velocity2Key, x)
+	x.SetContext(ctx)
 }
 
 // DeleteEntity ...
@@ -56,13 +56,13 @@ func (c *Velocity2Component) HasEntity(id atom.EntityID) bool {
 
 // SetVelocity2 ...
 func (c *Velocity2Component) SetVelocity2(id atom.EntityID, velocity2 Velocity2Data) {
-	if c.context.HasEntity(id) {
+	if c.ctx.HasEntity(id) {
 		if c.HasEntity(id) {
 			c.data[id] = velocity2
-			c.context.ComponentUpdated(Velocity2Key, id)
+			c.ctx.ComponentUpdated(Velocity2Key, id)
 		} else {
 			c.data[id] = velocity2
-			c.context.ComponentAdded(Velocity2Key, id)
+			c.ctx.ComponentAdded(Velocity2Key, id)
 		}
 	}
 }
@@ -75,7 +75,7 @@ func (c *Velocity2Component) Velocity2(id atom.EntityID) Velocity2Data {
 // DeleteVelocity2 ...
 func (c *Velocity2Component) DeleteVelocity2(id atom.EntityID) {
 	delete(c.data, id)
-	c.context.ComponentDeleted(Velocity2Key, id)
+	c.ctx.ComponentDeleted(Velocity2Key, id)
 }
 
 // SetVelocity2X ...
