@@ -1,4 +1,4 @@
-prog = atom component add -p atomkit -n
+prog = zinc component add -p zinckit -n
 
 test:
 	go test -race -coverprofile=coverage.txt -covermode=atomic
